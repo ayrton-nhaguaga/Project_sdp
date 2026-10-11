@@ -1,0 +1,10 @@
+{
+ "$schema": "../node_modules/wrangler/config-schema.json",
+ "name": "cloudexpense",
+ "main": "src/index.ts",
+ "compatibility_date": "2026-10-01",
+ "vars": { "APP_ENV": "development" },
+ "d1_databases": [
+   { "binding": "DB", "database_name": "cloudexpense", "migrations_dir": "migrations" }
+ ]
+}

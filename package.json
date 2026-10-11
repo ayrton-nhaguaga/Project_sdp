@@ -1,0 +1,32 @@
+{
+  "name": "cloudexpense",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "worker"
+  ],
+  "engines": {
+    "node": "\u003e=22.12.0"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n worker,frontend \"npm run dev:worker\" \"npm run dev:frontend\"",
+    "dev:frontend": "npm run dev -w frontend",
+    "dev:worker": "npm run dev -w worker",
+    "db:migrate": "npm run db:migrate -w worker",
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces",
+    "build": "npm run typecheck \u0026\u0026 npm run build -w frontend",
+    "deploy:check": "npm run build \u0026\u0026 npm run deploy:check -w worker",
+    "test:e2e": "playwright test",
+    "preview": "npm run build \u0026\u0026 npm run preview -w worker"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^22.18.0",
+    "concurrently": "^9.2.1",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.3"
+  }
+}

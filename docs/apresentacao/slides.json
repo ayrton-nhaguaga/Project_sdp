@@ -1,0 +1,170 @@
+[
+  {
+    "slide": 1,
+    "title": "Computação Serverless",
+    "section": "Apresentação académica",
+    "notes": "Apresentar os autores e o tema. O CloudExpense é o estudo de caso desenvolvido para demonstrar funções activadas por HTTP, persistência num serviço gerido e uma interface web moderna. O trabalho está funcional e validado localmente; a publicação remota ainda não foi realizada. Não indicar uma instituição ou curso que não tenham sido fornecidos.",
+    "source": ""
+  },
+  {
+    "slide": 2,
+    "title": "Percurso da apresentação",
+    "section": "Roteiro",
+    "notes": "Organizar a exposição em quatro momentos. Primeiro definir o problema e os objectivos; depois explicar os fundamentos; em seguida mostrar a arquitectura e a aplicação; terminar com resultados, limitações e conclusão. Duração sugerida: 18 a 22 minutos, incluindo uma demonstração breve.",
+    "source": ""
+  },
+  {
+    "slide": 3,
+    "title": "Introdução: do registo à informação",
+    "section": "Contexto",
+    "notes": "Explicar que o projecto liga um problema de organização financeira a uma questão tecnológica. Não se apresenta uma pesquisa estatística sobre hábitos dos utilizadores; trata-se do cenário que orientou o desenvolvimento. O foco académico é compreender como a aplicação processa cada acção sem manter um servidor de aplicação tradicional.",
+    "source": "Fonte: descrição e objectivos do projecto CloudExpense."
+  },
+  {
+    "slide": 4,
+    "title": "Problema e pergunta de investigação",
+    "section": "Problematização",
+    "notes": "Apresentar dois níveis do problema: o funcional, organizar e consultar movimentos, e o de engenharia, implementar a aplicação sem administrar um servidor permanente. A pergunta orienta a demonstração prática; o trabalho não pretende provar que serverless é sempre mais barato ou mais rápido.",
+    "source": ""
+  },
+  {
+    "slide": 5,
+    "title": "Justificativa e relevância",
+    "section": "Motivação",
+    "notes": "O projecto tem relevância prática, pedagógica e técnica. A gestão financeira oferece operações fáceis de observar, enquanto o percurso HTTP até ao banco permite explicar eventos, função e serviço gerido. Segurança e testes fazem parte da demonstração.",
+    "source": ""
+  },
+  {
+    "slide": 6,
+    "title": "Objectivo geral e objectivos específicos",
+    "section": "Objectivos",
+    "notes": "Ler o objectivo geral e resumir os específicos em três grupos: implementar a API e persistência; construir a interface e relatórios; validar, observar e preparar a publicação. Todos se relacionam com os critérios de demonstração do trabalho.",
+    "source": ""
+  },
+  {
+    "slide": 7,
+    "title": "Metodologia de desenvolvimento",
+    "section": "Método",
+    "notes": "Caracterizar o trabalho como desenvolvimento aplicado de um protótipo funcional, com verificação incremental. Os requisitos orientaram a construção; os testes verificaram regras e fluxos. Não houve estudo com participantes nem comparação experimental de desempenho entre plataformas.",
+    "source": ""
+  },
+  {
+    "slide": 8,
+    "title": "O que é Computação Serverless?",
+    "section": "Fundamentos",
+    "notes": "Serverless significa que a infraestrutura de execução é gerida pelo fornecedor. Os servidores físicos continuam a existir. FaaS é a execução de funções em resposta a eventos; neste projecto, o evento é um pedido HTTP. O estado financeiro fica no D1, não na memória temporária do Worker. Não assumir que cada pedido cria uma máquina ou um processo novo.",
+    "source": "Referências: [1] funcionamento de Workers; [2] visão geral do D1."
+  },
+  {
+    "slide": 9,
+    "title": "Hospedagem tradicional e serverless",
+    "section": "Fundamentos",
+    "notes": "Comparar responsabilidades, evitando generalizações. Na hospedagem tradicional aqui considerada existe um processo de aplicação numa máquina provisionada. O modelo gerido retira tarefas de operação de infraestrutura, mas não elimina o trabalho com código, segurança, dados e custos. Ambos podem ser válidos conforme os requisitos.",
+    "source": "Referência: [1]. Comparação conceptual; sem benchmark de custos ou desempenho."
+  },
+  {
+    "slide": 10,
+    "title": "Tecnologias e responsabilidades",
+    "section": "Solução proposta",
+    "notes": "Explicar a stack pelo papel de cada conjunto, sem transformar a apresentação numa lista de bibliotecas. React trata da experiência; Hono organiza a API; D1 persiste. Wrangler executa e publica; testes validam. Node.js é usado para ferramentas de desenvolvimento, não como servidor permanente de produção.",
+    "source": ""
+  },
+  {
+    "slide": 11,
+    "title": "Arquitectura da aplicação",
+    "section": "Arquitectura",
+    "notes": "Seguir as setas da esquerda para a direita. React comunica por HTTP REST com Hono, que chama services e repositories. O repository usa o binding DB. A resposta regressa em JSON. Em produção, Access protege o acesso e Static Assets serve React. A configuração remota está preparada, mas ainda não publicada.",
+    "source": "Fonte: docs/ARCHITECTURE.md. Protecção Access e publicação remota ainda pendentes."
+  },
+  {
+    "slide": 12,
+    "title": "O percurso de uma transacção",
+    "section": "Execução sob demanda",
+    "notes": "Usar este slide para responder à pergunta 'onde está a função?'. O evento entra no handler do Worker, Hono selecciona a rota e a lógica é executada. A escrita é aguardada antes da confirmação. A interface invalida as consultas para obter os totais do backend. Um ambiente de execução pode ser reutilizado; os dados não dependem da sua memória.",
+    "source": ""
+  },
+  {
+    "slide": 13,
+    "title": "Modelo de dados e integridade",
+    "section": "Persistência",
+    "notes": "Mostrar a relação de uma categoria para muitas transacções. O esquema tem timestamps, índices e restrições adicionais; o diagrama mostra os campos essenciais. Explicar a conversão monetária sem arredondamento e a proibição de eliminar categorias utilizadas. O saldo é calculado, não duplicado numa coluna.",
+    "source": "Fonte: worker/migrations/0001_initial.sql e shared/schemas.ts."
+  },
+  {
+    "slide": 14,
+    "title": "Dashboard: informação financeira visível",
+    "section": "Interface",
+    "notes": "Mostrar a captura real obtida num teste local. Os valores são registos temporários de teste, removidos depois da validação. Destacar cartões, evolução por mês e despesas por categoria. Todos recebem valores da API. O dashboard mostra o ano seleccionado; o saldo também se refere a esse período.",
+    "source": "Imagem: captura real do CloudExpense em teste local; dados de demonstração, não dados pessoais."
+  },
+  {
+    "slide": 15,
+    "title": "Funcionalidades e experiência de utilização",
+    "section": "Interface",
+    "notes": "A aplicação permite criar, ler, editar e eliminar movimentos, e gerir categorias com restrições. Os filtros combinam-se com paginação. Mostrar a captura mobile e explicar que as tabelas largas têm scroll interno. Não afirmar uma auditoria completa de acessibilidade: foram implementados foco, labels, teclado e feedback, e validados fluxos no browser.",
+    "source": "Imagem: captura mobile do teste E2E. Fonte funcional: README.md e docs/TESTING.md."
+  },
+  {
+    "slide": 16,
+    "title": "Segurança em várias camadas",
+    "section": "Segurança",
+    "notes": "Distinguir protecção implementada de configuração externa. Zod valida em ambos os lados, mas o backend é a autoridade. SQL parametrizado e constraints protegem dados. O middleware de produção valida assinatura e claims JWT. Ainda é preciso criar a política Access real na conta. O MVP é um espaço partilhado, sem contas individuais.",
+    "source": "Referência: [3] validação de JWT Access. Evidência local: testes do Worker."
+  },
+  {
+    "slide": 17,
+    "title": "Demonstração: do movimento ao saldo",
+    "section": "Validação funcional",
+    "notes": "Executar, se houver tempo, os passos no browser. Primeiro criar receita de 25000 MT na categoria Salário; depois despesa de 5000 MT em Alimentação, com datas no mesmo ano seleccionado. Confirmar os cartões e recarregar. Os testes E2E também fizeram edição, eliminação e gestão de categorias.",
+    "source": "Fonte: testes locais de integração e E2E. Montantes temporários de demonstração."
+  },
+  {
+    "slide": 18,
+    "title": "Testes e resultados obtidos",
+    "section": "Avaliação",
+    "notes": "Os números são do relatório de testes registado em 11 de Outubro de 2026. São 55 testes unitários/de integração e 2 percursos end-to-end, totalizando 57 casos executados. Distinguir testes de componente com mocks HTTP dos testes Worker/D1 no runtime local. Estes resultados não comprovam desempenho ou disponibilidade na cloud.",
+    "source": "Fonte: docs/TESTING.md — execução local em 11/10/2026."
+  },
+  {
+    "slide": 19,
+    "title": "Como observar a execução serverless",
+    "section": "Observabilidade",
+    "notes": "Mostrar a aba Network durante a demonstração e relacionar o pedido com o log. O requestId permite correlacionar eventos. Não mostrar uma latência inventada no slide: o painel mede-a ao vivo. A duração HTTP inclui rede e processamento e não corresponde ao tempo de CPU facturado. Métricas remotas só estarão disponíveis depois de publicar.",
+    "source": ""
+  },
+  {
+    "slide": 20,
+    "title": "Vantagens, custos e limitações",
+    "section": "Discussão",
+    "notes": "Relacionar vantagens com escolhas observadas, sem prometer poupança medida. O modelo de cobrança depende do plano; não inserir preços fixos. Neste projecto todos os pedidos passam pelo Worker para validação de Access, incluindo assets. D1 tem limites próprios; escalabilidade do compute não elimina gargalos nos dados.",
+    "source": "Referências: [4] preços Workers; [5] preços D1. Não foi realizada análise comparativa de custos."
+  },
+  {
+    "slide": 21,
+    "title": "Estado actual e caminho para publicação",
+    "section": "Execução e deploy",
+    "notes": "Ser preciso sobre o estado do trabalho: funciona no computador com Wrangler e D1 local. O dry-run apenas valida o empacotamento. Para publicar, falta autenticar na conta, criar a base remota, preencher o ID, configurar domínio e Access, aplicar migrações e publicar com autorização. Dados locais não são transferidos automaticamente.",
+    "source": "Fonte: docs/DEPLOYMENT.md. Nenhuma publicação remota foi realizada."
+  },
+  {
+    "slide": 22,
+    "title": "Conclusão e trabalhos futuros",
+    "section": "Conclusão",
+    "notes": "Retomar o objectivo geral. A implementação demonstra execução orientada a pedidos, regras no Worker e persistência independente no D1 local. Os testes sustentam o funcionamento nos fluxos verificados. A demonstração remota exige a configuração e publicação ainda pendentes. Melhorias futuras não devem ser apresentadas como funcionalidades já existentes.",
+    "source": ""
+  },
+  {
+    "slide": 23,
+    "title": "Referências e fontes das evidências",
+    "section": "Referências",
+    "notes": "As referências técnicas são documentação oficial Cloudflare, consultada em 11 de Outubro de 2026. Os números de testes e capturas vêm do projecto local. Os links completos estão nas notas e no guião. Os diagramas foram elaborados para esta apresentação.",
+    "source": "Consulta: 11/10/2026. Capturas e diagramas: elaboração própria a partir do projecto."
+  },
+  {
+    "slide": 24,
+    "title": "Questões e discussão",
+    "section": "Encerramento",
+    "notes": "Agradecer e convidar perguntas. Preparar respostas sobre a diferença entre FaaS e serverless, localização da persistência, validação monetária, ausência de contas, limites do teste local e configuração de Access. Se solicitado, abrir a aplicação ou a documentação do repositório.",
+    "source": ""
+  }
+]
